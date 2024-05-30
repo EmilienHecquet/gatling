@@ -47,4 +47,3 @@ jobs:
 
     - name: Run Gatling Load Tests
       run: cd api-performance-test && mvn gatling:test '-DclassName=tests.SmokeTest'
-
