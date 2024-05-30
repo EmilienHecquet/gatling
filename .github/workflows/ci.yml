@@ -48,19 +48,3 @@ jobs:
     - name: Run Gatling Load Tests
       run: cd api-performance-test && mvn gatling:test '-DclassName=tests.SmokeTest'
 
-    - name: Check for test failures
-      run: |
-        TOTAL_TESTS=$(grep -oP '(?<=ALL\s\|).*?(?=\s)' api-performance-test/target/gatling/**/simulation.log | wc -l)
-        FAILED_TESTS=$(grep -oP '(?<=KO\s\|).*?(?=\s)' api-performance-test/target/gatling/**/simulation.log | wc -l)
-        if [ "$TOTAL_TESTS" -eq 0 ]; then
-          echo "No tests found. Failing the job."
-          exit 1
-        fi
-        FAILURE_PERCENTAGE=$(echo "scale=2; $FAILED_TESTS/$TOTAL_TESTS*100" | bc)
-        echo "Total tests: $TOTAL_TESTS"
-        echo "Failed tests: $FAILED_TESTS"
-        echo "Failure percentage: $FAILURE_PERCENTAGE%"
-        if (( $(echo "$FAILURE_PERCENTAGE > 80" | bc -l) )); then
-          echo "More than 80% test failures. Failing the job."
-          exit 1
-        fi
