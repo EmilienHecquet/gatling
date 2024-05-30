@@ -43,7 +43,7 @@ jobs:
           ${{ runner.os }}-maven
 
     - name: Build Gatling Project with Maven
-      run: cd api-performance-test && mvn -B clean install
+      run: cd api-performance-test && mvn -B -X clean install
 
     - name: Run Gatling Load Tests
       run: cd api-performance-test && mvn gatling:test '-DclassName=tests.SmokeTest'
