@@ -42,8 +42,11 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-maven
 
+    - name: Set MAVEN_OPTS for more memory
+      run: echo "MAVEN_OPTS='-Xmx1024m -XX:MaxPermSize=256m'" >> $GITHUB_ENV
+
     - name: Build Gatling Project with Maven
       run: cd api-performance-test && mvn -B clean install
 
-    - name: Run Gatling Load Tests
-      run: cd api-performance-test && mvn gatling:test '-DclassName=tests.SmokeTest'
+    - name: Run Gatling Load Tests with debug info
+      run: cd api-performance-test && mvn -X gatling:test '-DclassName=tests.SmokeTest'
